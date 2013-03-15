@@ -16,6 +16,8 @@ NSString * const CAMERA_SHOULD_LAUNCH_NOTIFICATION          = @"CAMERA_SHOULD_LA
 NSString * const CAMERA_SHOULD_CLOSE_NOTIFICATION           = @"CAMERA_SHOULD_CLOSE_NOTIFICATION";
 @interface CameraModuleView()
 
+@property(assign)SystemSoundID soundID;
+
 -(void)setModule:(CGRect)_frame;
 
 -(void)buttonClicked:(UIButton*)button;
@@ -25,10 +27,13 @@ NSString * const CAMERA_SHOULD_CLOSE_NOTIFICATION           = @"CAMERA_SHOULD_CL
 @implementation CameraModuleView
 @synthesize captureManager;
 @synthesize previewLayer;
+@synthesize soundID;
 
 - (id)initWithFrame:(CGRect)_frame
 {
     if (self = [super initWithFrame:_frame]) {
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"cam_click" ofType:@"aifc"];
+        AudioServicesCreateSystemSoundID((CFURLRef)[NSURL fileURLWithPath:path], &soundID);
         [self setModule:_frame];
     }
     
@@ -96,11 +101,7 @@ NSString * const CAMERA_SHOULD_CLOSE_NOTIFICATION           = @"CAMERA_SHOULD_CL
         case TTX_CAMERA_CAPTURE:
             [[NSNotificationCenter defaultCenter] postNotificationName:@"CAMERA_SHOULD_LAUNCH_NOTIFICATION" object:nil userInfo:nil];
             // PLAY SIMPLE SOUND
-            NSString *path = [[NSBundle mainBundle] pathForResource:@"cam_click" ofType:@"aifc"];;
-            SystemSoundID soundID;
-            AudioServicesCreateSystemSoundID((CFURLRef)[NSURL fileURLWithPath:path], &soundID);
             AudioServicesPlaySystemSound(soundID);
-            // AudioServicesDisposeSystemSoundID(soundID);
             // Capture a still image
             #if !TARGET_IPHONE_SIMULATOR
             [self.captureManager captureStillImage];
@@ -134,7 +135,7 @@ NSString * const CAMERA_SHOULD_CLOSE_NOTIFICATION           = @"CAMERA_SHOULD_CL
     
     [captureManager release];
     captureManager = nil;
-    
+    AudioServicesDisposeSystemSoundID(soundID);
     [super dealloc];
 }
 
