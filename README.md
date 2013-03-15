@@ -1,6 +1,6 @@
 MicoCamera
 ======
-<a href="https://github.com/YoonLee/MicroScreenCamera/blob/master/Demo.png?raw=true"></a>
+<img src="https://2aq3qw.bn1.livefilestore.com/y1pa2ySJFMFU-B98mXIzSFvRF0_eA3XjiPLZVKoiT3qGunYRkJyb6_UjfstVCGckvwTlRM9OnNgOdAigirPaFoe7Q1cgy09gSZc/Demo.png"></a>
 
 Usage
 ======
